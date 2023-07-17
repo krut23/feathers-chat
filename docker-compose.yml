@@ -1,0 +1,30 @@
+version: "3"
+services:
+  db:
+    image: postgres
+    environment:
+      PGUSER: postgres
+      PGPASSWORD: root
+      PGDATABASE: feathers-chat
+    ports:
+      - "5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3030:3030"
+    depends_on:
+      - db
+    environment:
+      PGUSER: postgres
+      PGHOST: db
+      PGPORT: 5432
+      PGPASSWORD: root
+      PGDATABASE: feathers-chat
+
+volumes:
+  postgres-data:
